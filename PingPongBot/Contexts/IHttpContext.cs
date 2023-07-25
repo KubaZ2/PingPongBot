@@ -1,4 +1,4 @@
-﻿using NetCord;
+﻿using NetCord.Rest;
 
 namespace PingPongBot;
 

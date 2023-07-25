@@ -1,4 +1,5 @@
 ﻿using NetCord;
+using NetCord.Rest;
 using NetCord.Services.ApplicationCommands;
 
 using PingPongBot.Middlewares;
@@ -17,7 +18,12 @@ public class PingModule : BaseApplicationCommandModule<HttpSlashCommandContext>
     [SlashCommand("ping", "Ping!")]
     public Task PingAsync()
     {
-        Context.Callback = InteractionCallback.ChannelMessageWithSource(PingHelper.CreateResponse(_latencyMonitor));
+        Context.Callback = InteractionCallback.ChannelMessageWithSource(new InteractionMessageProperties().WithContent($"Pong! {Math.Round(_latencyMonitor.Latency.TotalMilliseconds)} ms")
+                                                                                                          .AddComponents(new ActionRowProperties(
+                                                                                                                             new ButtonProperties[]
+                                                                                                                             {
+                                                                                                                                 new ActionButtonProperties("ping", "Update", new EmojiProperties("🔄"), ButtonStyle.Primary),
+                                                                                                                             })));
         return Task.CompletedTask;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using NetCord;
+using NetCord.Rest;
 using NetCord.Services.Interactions;
 
 using PingPongBot.Middlewares;
@@ -17,7 +18,7 @@ public class PingModule : InteractionModule<HttpButtonInteractionContext>
     [Interaction("ping")]
     public Task PingAsync()
     {
-        Context.Callback = InteractionCallback.UpdateMessage(PingHelper.CreateResponse(_latencyMonitor));
+        Context.Callback = InteractionCallback.ModifyMessage(m => m.WithContent($"Pong! {Math.Round(_latencyMonitor.Latency.TotalMilliseconds)} ms"));
         return Task.CompletedTask;
     }
 }
