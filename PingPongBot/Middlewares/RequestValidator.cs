@@ -7,13 +7,13 @@ internal partial class RequestValidator : IMiddleware
 {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
-        if (await IsSignatureValid(context.Request, context.RequestServices.GetRequiredService<IConfiguration>()["BotPublicKey"]!))
+        if (await IsSignatureValidAsync(context.Request, context.RequestServices.GetRequiredService<IConfiguration>()["BotPublicKey"]!))
             await next(context);
         else
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
     }
 
-    private static async ValueTask<bool> IsSignatureValid(HttpRequest request, string publicKey)
+    private static async ValueTask<bool> IsSignatureValidAsync(HttpRequest request, string publicKey)
     {
         if (!request.Headers.TryGetValue("X-Signature-Ed25519", out var signature) || !request.Headers.TryGetValue("X-Signature-Timestamp", out var timestamp))
             return false;
@@ -28,9 +28,9 @@ internal partial class RequestValidator : IMiddleware
         request.Body = messageStream;
 
         var result = CryptoSignEd25519VerifyDetached(ref MemoryMarshal.GetArrayDataReference(Convert.FromHexString(signature!)),
-                                                               ref MemoryMarshal.GetArrayDataReference(messageStream.GetBuffer()),
-                                                               (ulong)messageStream.Length,
-                                                               ref MemoryMarshal.GetArrayDataReference(Convert.FromHexString(publicKey)));
+                                                     ref MemoryMarshal.GetArrayDataReference(messageStream.GetBuffer()),
+                                                     (ulong)messageStream.Length,
+                                                     ref MemoryMarshal.GetArrayDataReference(Convert.FromHexString(publicKey)));
         return result is 0;
     }
 
