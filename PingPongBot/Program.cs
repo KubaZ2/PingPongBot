@@ -5,12 +5,12 @@ using NetCord.Rest;
 using NetCord.Services.ApplicationCommands;
 using NetCord.Services.Interactions;
 
-using PingPongBot;
 using PingPongBot.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddTransient<RequestValidator>()
+builder.Services.AddSingleton(services => new HttpInteractionValidator(services.GetRequiredService<IConfiguration>()["BotPublicKey"]!))
+                .AddTransient<RequestValidator>()
                 .AddSingleton<LatencyMonitor>()
                 .AddSingleton(services => new Token(TokenType.Bot, services.GetRequiredService<IConfiguration>()["BotToken"]!))
                 .AddSingleton(services => new RestClient(services.GetRequiredService<Token>()))
@@ -18,10 +18,10 @@ builder.Services.AddTransient<RequestValidator>()
                 .AddSingleton(services => new InteractionService<HttpButtonInteractionContext>())
                 .AddControllers();
 
-
 var app = builder.Build();
 
 await app.SetupInteractionServicesAsync();
+
 app.UseMiddleware<RequestValidator>();
 app.UseMiddleware<LatencyMonitor>();
 app.MapControllers();

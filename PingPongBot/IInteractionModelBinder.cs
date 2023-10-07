@@ -1,19 +1,15 @@
-﻿using System.Text.Json;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-using NetCord;
-using NetCord.JsonModels;
 using NetCord.Rest;
 
 namespace PingPongBot;
 
 internal class IInteractionModelBinder : IModelBinder
 {
-    public async Task BindModelAsync(ModelBindingContext bindingContext)
+    public Task BindModelAsync(ModelBindingContext bindingContext)
     {
-        var model = (await JsonSerializer.DeserializeAsync<JsonInteraction>(bindingContext.HttpContext.Request.Body, Serialization.Options))!;
-        var interaction = IInteraction.CreateFromJson(model, bindingContext.HttpContext.RequestServices.GetRequiredService<RestClient>());
-        bindingContext.Result = ModelBindingResult.Success(interaction);
+        var httpContext = bindingContext.HttpContext;
+        bindingContext.Result = ModelBindingResult.Success(HttpInteractionFactory.Create(httpContext.Request.Body, httpContext.RequestServices.GetRequiredService<RestClient>()));
+        return Task.CompletedTask;
     }
 }
