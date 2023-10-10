@@ -2,9 +2,7 @@
 using NetCord.Rest;
 using NetCord.Services.Interactions;
 
-using PingPongBot.Middlewares;
-
-namespace PingPongBot.Modules.ButtonInteractions;
+namespace PingPongBot.ButtonInteractions;
 
 public class PingModule : InteractionModule<HttpButtonInteractionContext>
 {

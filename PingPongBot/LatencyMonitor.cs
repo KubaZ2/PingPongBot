@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace PingPongBot.Middlewares;
+namespace PingPongBot;
 
 public class LatencyMonitor : IMiddleware
 {
