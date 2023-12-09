@@ -21,13 +21,20 @@ builder.Services
 
 var app = builder.Build();
 
-app.AddSlashCommand<HttpSlashCommandContext>("ping", "Ping!", (LatencyMonitor latencyMonitor, HttpSlashCommandContext context) => new InteractionMessageProperties().WithContent($"Pong! {Math.Round(latencyMonitor.Latency.TotalMilliseconds)} ms")
-                                                                                                                                                                    .AddComponents(new ActionRowProperties([new ActionButtonProperties("ping",
-                                                                                                                                                                                                                                       "Update",
-                                                                                                                                                                                                                                       new EmojiProperties("🔄"),
-                                                                                                                                                                                                                                       ButtonStyle.Primary)])));
+app.AddSlashCommand<HttpSlashCommandContext>("ping", "Ping!",
+    (LatencyMonitor latencyMonitor, HttpSlashCommandContext context) =>
+    {
+        ActionButtonProperties updateButton = new("ping", "Update", new("🔄"), ButtonStyle.Primary);
 
-app.AddInteraction<HttpButtonInteractionContext>("ping", (LatencyMonitor latencyMonitor, HttpButtonInteractionContext context) => InteractionCallback.ModifyMessage(m => m.WithContent($"Pong! {Math.Round(latencyMonitor.Latency.TotalMilliseconds)} ms")));
+        return new InteractionMessageProperties()
+            .WithContent($"Pong! {Math.Round(latencyMonitor.Latency.TotalMilliseconds)} ms")
+            .AddComponents(new ActionRowProperties([updateButton]));
+    })
+    .AddInteraction<HttpButtonInteractionContext>("ping",
+    (LatencyMonitor latencyMonitor, HttpButtonInteractionContext context) =>
+    {
+        return InteractionCallback.ModifyMessage(m => m.WithContent($"Pong! {Math.Round(latencyMonitor.Latency.TotalMilliseconds)} ms"));
+    });
 
 app.UseMiddleware<LatencyMonitor>();
 app.UseHttpInteractions("/");
