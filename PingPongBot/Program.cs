@@ -29,8 +29,9 @@ app.AddSlashCommand<HttpSlashCommandContext>("ping", "Ping!",
         return new InteractionMessageProperties()
             .WithContent($"Pong! {Math.Round(latencyMonitor.Latency.TotalMilliseconds)} ms")
             .AddComponents(new ActionRowProperties([updateButton]));
-    })
-    .AddInteraction<HttpButtonInteractionContext>("ping",
+    });
+
+app.AddInteraction<HttpButtonInteractionContext>("ping",
     (LatencyMonitor latencyMonitor, HttpButtonInteractionContext context) =>
     {
         return InteractionCallback.ModifyMessage(m => m.WithContent($"Pong! {Math.Round(latencyMonitor.Latency.TotalMilliseconds)} ms"));
