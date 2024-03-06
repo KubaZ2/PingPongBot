@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetCord" Version="1.0.0-alpha.233" />
-    <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.126" />
-    <PackageReference Include="NetCord.Hosting" Version="1.0.0-alpha.1" />
-    <PackageReference Include="NetCord.Hosting.AspNetCore" Version="1.0.0-alpha.1" />
-    <PackageReference Include="NetCord.Hosting.Services" Version="1.0.0-alpha.1" />
+    <PackageReference Include="NetCord" Version="1.0.0-alpha.270" />
+    <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.171" />
+    <PackageReference Include="NetCord.Hosting" Version="1.0.0-alpha.40" />
+    <PackageReference Include="NetCord.Hosting.AspNetCore" Version="1.0.0-alpha.41" />
+    <PackageReference Include="NetCord.Hosting.Services" Version="1.0.0-alpha.49" />
   </ItemGroup>
 
   <ItemGroup>
