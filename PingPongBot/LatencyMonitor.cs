@@ -8,7 +8,14 @@ public class LatencyMonitor : IMiddleware
     private readonly Stopwatch _stopwatch = new();
     private TimeSpan _latency;
 
-    public TimeSpan Latency => _latency;
+    public TimeSpan Latency
+    {
+        get
+        {
+            var latency = Interlocked.Read(ref Unsafe.As<TimeSpan, long>(ref _latency));
+            return Unsafe.As<long, TimeSpan>(ref latency);
+        }
+    }
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {
