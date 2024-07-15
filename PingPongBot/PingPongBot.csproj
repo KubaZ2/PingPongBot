@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="libsodium" Version="1.0.20" />
     <PackageReference Include="NetCord" Version="1.0.0-alpha.270" />
     <PackageReference Include="NetCord.Services" Version="1.0.0-alpha.171" />
     <PackageReference Include="NetCord.Hosting" Version="1.0.0-alpha.40" />
@@ -19,12 +20,6 @@
     <Content Update="appsettings.example.json">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="libsodium.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
